@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Learner – Dashboard</title>
+
+  <style>
+    :root {
+      --bg1: #160630;
+      --bg2: #6c1d6c;
+      --panel: #d6c4cf;
+      --box: #d6c4cf;
+      --muted:#5f5f6e;
+      --text:#2d2d2d;
+      --primary:#5c277d;
+      --shadow:0 10px 24px rgba(124,77,255,0.18);
+      --border:#e8e3fb;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      height:100vh;
+      display:flex;
+      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+      font-family: Segoe UI, sans-serif;
+      overflow:hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position:fixed;
+      top:0; left:0;
+      width:240px; height:100vh;
+      background:var(--panel);
+      padding:30px 20px;
+    }
+    .nav a {
+      display:block;
+      padding:12px 10px;
+      margin-bottom:6px;
+      text-decoration:none;
+      color:#222;
+      border-radius:8px;
+      font-weight:500;
+    }
+    .nav a:hover { background:#fff; }
+
+    /* Main */
+    .main {
+      margin-left:240px;
+      width:calc(100% - 240px);
+      padding:40px;
+      overflow-y:auto;
+    }
+
+    /* Greeting */
+    .greeting {
+      text-align:center;
+      margin-bottom:40px;
+      color:white;
+    }
+
+    /* UPDATED → robo.jpg avatar */
+    .avatar {
+      width:100px;
+      height:100px;
+      border-radius:50%;
+      background:#fff;
+      border:3px dashed #a36cff;
+      margin:0 auto 12px;
+      overflow:hidden;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .avatar img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .hello {
+      font-size:24px;
+      font-weight:700;
+      color:#f3eaff;
+    }
+
+    /* Cards */
+    .grid {
+      display:grid;
+      grid-template-columns:repeat(2, minmax(280px, 1fr));
+      gap:80px;
+      margin:0 auto;
+      max-width:1000px;
+    }
+
+    .card {
+      background:var(--box);
+      border-radius:26px;
+      padding:40px;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      cursor:pointer;
+      transition:0.2s;
+    }
+
+    .card:hover {
+      transform:scale(1.05);
+      box-shadow:0 14px 30px rgba(0,0,0,0.25);
+    }
+
+    .emoji { font-size:26px; margin-right:10px; }
+    .title { font-size:18px; font-weight:700; }
+    .desc { color:var(--muted); margin:10px 0 20px; }
+
+    .cta {
+      background:var(--primary);
+      color:white;
+      padding:10px 16px;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:700;
+      box-shadow:0 6px 16px rgba(124,77,255,0.4);
+      display:inline-block;
+    }
+    .cta:hover { background:#7d41a8; }
+  </style>
+
+  <script>
+    window.onload = function () {
+      const params = new URLSearchParams(window.location.search);
+      const name = params.get("name") || "Learner";
+      document.getElementById("user-name").textContent = name;
+    };
+  </script>
+</head>
+
+<body>
+
+  <aside class="sidebar">
+    <h2>AI Learner</h2>
+    <nav class="nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="ask-doubts.html">Ask Doubts</a>
+      <a href="generate-quiz.html">Generate Quiz</a>
+      <a href="rewards.html">Rewards</a>
+      <a href="history.html">History</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <section class="greeting">
+
+      <!-- UPDATED: robo.jpg -->
+      <div class="avatar">
+        <img src="robo.jpg" alt="AI Avatar">
+      </div>
+
+      <div class="hello">Hello <span id="user-name">Learner</span> 👋</div>
+    </section>
+
+    <section class="grid">
+
+      <div class="card" onclick="location.href='ask-doubts.html'">
+        <div class="title"><span class="emoji">❓</span> Ask Doubts</div>
+        <div class="desc">Ask any question and get instant answers.</div>
+        <a class="cta">Get Started →</a>
+      </div>
+
+      <div class="card" onclick="location.href='generate-quiz.html'">
+        <div class="title"><span class="emoji">🧠</span> Take Quiz</div>
+        <div class="desc">Test your knowledge with AI quizzes.</div>
+        <a class="cta">Get Started →</a>
+      </div>
+
+      <div class="card" onclick="location.href='rewards.html'">
+        <div class="title"><span class="emoji">🏆</span> Rewards</div>
+        <div class="desc">Track your achievements & progress.</div>
+        <a class="cta">Get Started →</a>
+      </div>
+
+      <div class="card" onclick="location.href='history.html'">
+        <div class="title"><span class="emoji">📈</span> History</div>
+        <div class="desc">View previous learning sessions.</div>
+        <a class="cta">Get Started →</a>
+      </div>
+
+    </section>
+  </main>
+
+</body>
+</html>

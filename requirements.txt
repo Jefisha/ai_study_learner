@@ -1,0 +1,23 @@
+
+# Core web + runtime
+fastapi>=0.95,<1.0
+uvicorn[standard]>=0.22
+
+# Google Gemini / Generative API client
+google-generative-ai>=0.2.0
+
+# ChromaDB for vector store + embedding helpers
+chromadb>=0.3
+
+# Embeddings (local fallback) and ML deps
+sentence-transformers>=2.2
+torch>=2.0
+
+# LangGraph (workflow integration)
+langgraph>=0.1
+
+# Env file support (if you use .env)
+python-dotenv>=1.0
+
+# Utilities
+requests>=2.28

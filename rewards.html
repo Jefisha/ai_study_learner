@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rewards – AI Learner</title>
+
+  <style>
+    :root {
+      --bg1: #160630;
+      --bg2: #6c1d6c;
+      --panel:#d6c4cf;
+      --box:#d6c4cf;
+      --muted:#5f5f6e;
+      --text: #2d2d2d;
+      --primary: #5c277d;
+      --primary-hover: #814a73;
+      --shadow:0 10px 24px rgba(124,77,255,0.18);
+      --border:#e8e3fb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100vh;
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar{
+      position:fixed;left:0;top:0;
+      width:240px;height:100vh;
+      background:var(--panel);
+      padding:30px 20px;
+    }
+    .nav a{
+      display:block;
+      padding:12px 10px;
+      color:#222;text-decoration:none;
+      border-radius:8px;
+      margin-bottom:6px;
+      font-weight:500;
+    }
+    .nav a.active, .nav a:hover{
+      background:#fff;
+    }
+
+    .main {
+      position: fixed; left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%; max-width: 520px;
+      display: flex; justify-content: center; align-items: center;
+    }
+
+    .container {
+      background: var(--box);
+      padding: 28px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      text-align: center;
+      width: 100%; max-width: 460px;
+      box-shadow: var(--shadow);
+    }
+
+    .emoji { font-size: 32px; margin-bottom: 12px; }
+    .title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .points { font-size: 36px; font-weight: 800; margin-top: 12px; color: var(--primary); }
+
+    /* Quote Box */
+    .quote-box {
+      margin-top: 25px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.18);
+      font-size: 15px;
+      color: #333;
+      font-style: italic;
+      border-left: 5px solid var(--primary);
+    }
+  </style>
+
+  <script>
+    async function loadRewards() {
+      // Load points from backend
+      try {
+        const res = await fetch("http://127.0.0.1:8000/rewards");
+        const data = await res.json();
+        document.getElementById("points").textContent = data.points;
+      } catch (err) {
+        document.getElementById("points").textContent = "⚠️ Server Error";
+      }
+
+      // Motivational quotes
+      const quotes = [
+        "Every correct answer is a step closer to mastery.",
+        "Small progress each day leads to big results.",
+        "Learning never exhausts the mind.",
+        "Your knowledge today becomes your power tomorrow.",
+        "Great things are built by consistent tiny efforts.",
+        "Keep going — your future self will thank you.",
+        "Success is the sum of small efforts repeated daily.",
+        "You’re learning faster than you think!",
+        "Believe in yourself — every quiz makes you smarter.",
+        "Knowledge grows when you push your limits."
+      ];
+
+      // Pick a random quote
+      const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+      document.getElementById("quote").textContent = randomQuote;
+    }
+
+    window.onload = loadRewards;
+  </script>
+
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">AI Learner</div>
+    <nav class="nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="ask-doubts.html">Ask Doubts</a>
+      <a href="generate-quiz.html">Generate Quiz</a>
+      <a href="rewards.html" class="active">Rewards</a>
+      <a href="history.html">History</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="container">
+      <div class="emoji">🏆</div>
+      <div class="title">Your Total Rewards</div>
+
+      <!-- Dynamic Points -->
+      <div id="points" class="points">Loading...</div>
+
+      <!-- New Quote Box -->
+      <div class="quote-box" id="quote">
+        Loading quote...
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

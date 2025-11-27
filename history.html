@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Learning History – AI Learner</title>
+
+  <style>
+    :root {
+      --bg1:#160630; --bg2:#6c1d6c;
+      --panel:#d6c4cf; --box:#d6c4cf;
+      --primary:#5c277d; --border:#ffffff40;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      height:100vh;
+      font-family: Segoe UI, sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow: hidden;
+      color: #fff;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      left: 0; top: 0;
+      width: 240px; height: 100vh;
+      background: var(--panel);
+      padding: 30px 20px;
+    }
+    .nav a {
+      display: block;
+      padding: 12px 10px;
+      text-decoration: none;
+      color: #222;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+    .nav a.active,
+    .nav a:hover {
+      background: #fff;
+    }
+
+    /* MAIN CONTAINER CENTER LIKE CHATGPT */
+    .chat-wrapper {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      width: calc(100% - 260px);
+      max-width: 700px;
+      height: 85vh;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+    }
+
+    /* MESSAGE SCROLL AREA */
+    .history-box {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      border-radius: 16px;
+      background: #ffffff1d;
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    /* CHAT MESSAGE STYLE (SMALL CARDS) */
+    .msg {
+      max-width: 85%;
+      margin-bottom: 16px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      line-height: 1.4;
+      font-size: 15px;
+    }
+
+    .user {
+      background: #ffffffcc;
+      color: #000;
+      margin-left: auto;
+      border: 2px solid #fff;
+    }
+
+    .bot {
+      background: #2e114a;
+      border: 2px solid #522f7c;
+    }
+  </style>
+
+  <script>
+    async function loadHistory() {
+      const box = document.getElementById("history-box");
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/history");
+        const data = await res.json();
+
+        if (data.history.length === 0) {
+          box.innerHTML = "<p>No learning history yet.</p>";
+          return;
+        }
+
+        box.innerHTML = "";
+        
+        data.history.forEach(item => {
+          box.innerHTML += `
+            <div class="msg user">🧑‍💻 <b>You:</b> ${item.question}</div>
+            <div class="msg bot">🤖 <b>AI:</b> ${item.answer}</div>
+          `;
+        });
+
+        box.scrollTop = box.scrollHeight;
+
+      } catch (err) {
+        box.innerHTML = "<p>⚠️ Could not load history</p>";
+      }
+    }
+
+    window.onload = loadHistory;
+  </script>
+
+</head>
+
+<body>
+
+  <aside class="sidebar">
+    <div class="brand"><h2>AI Learner</h2></div>
+
+    <nav class="nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="ask-doubts.html">Ask Doubts</a>
+      <a href="generate-quiz.html">Generate Quiz</a>
+      <a href="rewards.html">Rewards</a>
+      <a href="history.html" class="active">History</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+  </aside>
+
+  <main class="chat-wrapper">
+    <div id="history-box" class="history-box">
+      Loading history...
+    </div>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>AI Quiz Generator</title>
+
+  <style>
+    :root{
+      --bg1:#160630;
+      --bg2:#6c1d6c;
+      --panel:#d6c4cf;
+      --primary:#8b50d6;
+      --card-bg:#ffffff;
+      --shadow:0 10px 30px rgba(0,0,0,0.25);
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+      height:100vh;
+      overflow:hidden;
+      font-family:Segoe UI,Arial;
+      color:#fff;
+    }
+
+    /* Sidebar */
+    .sidebar{
+      position:fixed;left:0;top:0;
+      width:240px;height:100vh;
+      background:var(--panel);
+      padding:30px 20px;
+    }
+    .nav a{
+      display:block;
+      padding:12px 10px;
+      color:#222;text-decoration:none;
+      border-radius:8px;
+      margin-bottom:6px;
+      font-weight:500;
+    }
+    .nav a.active, .nav a:hover{
+      background:#fff;
+    }
+
+    /* Main section */
+    .main{
+      position:absolute;
+      left:260px;
+      top:0;
+      width:calc(100% - 260px);
+      height:100vh;
+      padding:40px 50px;
+      overflow-y:auto;
+    }
+
+    h1{
+      font-size:34px;
+      font-weight:700;
+      margin-bottom:10px;
+    }
+    .subtext{
+      color:#e0ccff;
+      margin-bottom:30px;
+      font-size:15px;
+    }
+
+    /* Form card */
+    .quiz-form-card{
+      background:var(--card-bg);
+      width:100%;
+      padding:30px;
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      color:#000;
+      max-width:700px;
+    }
+
+    input,select{
+      width:100%;
+      padding:14px;
+      border-radius:10px;
+      border:1px solid #ddd;
+      margin-bottom:14px;
+      font-size:15px;
+    }
+
+    .btn{
+      width:100%;
+      padding:14px;
+      background:var(--primary);
+      border:none;
+      color:#fff;
+      font-size:16px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      transition:0.2s;
+    }
+    .btn:hover{
+      transform:scale(1.02);
+    }
+
+    /* Quiz output */
+    .output-card{
+      background:var(--card-bg);
+      box-shadow:var(--shadow);
+      color:#000;
+      padding:30px;
+      border-radius:16px;
+      margin-top:30px;
+      max-width:900px;
+    }
+
+    .question-block{
+      margin-bottom:20px;
+      border-bottom:1px solid #eee;
+      padding-bottom:15px;
+    }
+    .question-block label{
+      font-weight:700;
+      margin-bottom:8px;
+      display:block;
+    }
+
+    pre{
+      background:#f5f5f5;
+      padding:10px;
+      border-radius:8px;
+      overflow-x:auto;
+      white-space:pre-wrap;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2 style="margin-bottom:20px;font-size:22px;font-weight:700;">AI Learner</h2>
+    <nav class="nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="ask-doubts.html">Ask Doubts</a>
+      <a href="generate-quiz.html" class="active">Generate Quiz</a>
+      <a href="rewards.html">Rewards</a>
+      <a href="history.html">History</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <div class="main">
+    <h1>AI Quiz Generator</h1>
+    <div class="subtext">Create interactive quizzes instantly using AI — learn faster and smarter.</div>
+
+    <!-- Form Card -->
+    <div class="quiz-form-card">
+      <input id="topic" placeholder="Topic (e.g. Python, History)" />
+      <select id="level">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+      <input id="num_questions" type="number" min="1" max="10" value="5" />
+      <button id="createBtn" class="btn">Generate Quiz</button>
+    </div>
+
+    <div id="quizArea"></div>
+  </div>
+
+
+<script>
+document.getElementById("createBtn").addEventListener("click", async () => {
+  const topic = document.getElementById("topic").value.trim();
+  const level = document.getElementById("level").value;
+  const num = parseInt(document.getElementById("num_questions").value) || 5;
+  const area = document.getElementById("quizArea");
+
+  if (!topic){
+    area.innerHTML = `<div class='output-card'>Please enter a topic.</div>`;
+    return;
+  }
+
+  area.innerHTML = `<div class="output-card">⏳ Generating quiz...</div>`;
+
+  try{
+    const res = await fetch("http://127.0.0.1:8000/quiz", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({topic, level, num_questions:num})
+    });
+
+    const data = await res.json();
+    if (data.error){
+      area.innerHTML = `<div class='output-card'>${data.error}</div>`;
+      return;
+    }
+
+    const quizId = data.quiz_id;
+    const questions = data.quiz;
+
+    let html = `
+      <div class="output-card">
+        <div style="font-size:14px;color:#777;margin-bottom:20px;">
+          📘 Topic: <b>${topic}</b> &nbsp; • &nbsp; 🎯 Level: <b>${level}</b>
+        </div>
+        <form id="quizForm">
+    `;
+
+    questions.forEach((q,i)=>{
+      html += `
+        <div class="question-block">
+          <label>Q${i+1}: ${q}</label>
+          <input name="ans_${i}" placeholder="Your answer" />
+        </div>
+      `;
+    });
+
+    html += `
+        <button class="btn" type="submit">Submit Answers</button>
+        </form>
+        <div id="resultArea" style="margin-top:25px;"></div>
+      </div>
+    `;
+
+    area.innerHTML = html;
+
+    // Submit Answers
+    document.getElementById("quizForm").addEventListener("submit", async (e)=>{
+      e.preventDefault();
+      const inputs = [...e.target.querySelectorAll("input")];
+      const userAnswers = inputs.map(inp=>inp.value);
+
+      document.getElementById("resultArea").innerHTML = "⏳ Evaluating...";
+
+      const resp = await fetch("http://127.0.0.1:8000/submit-quiz", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({quiz_id:quizId,user_answers:userAnswers})
+      });
+
+      const resData = await resp.json();
+
+      let out = `
+        <div style="font-size:17px;font-weight:600;">
+          ✅ Score: ${resData.score} / ${resData.total}<br>
+          ⭐ Points Earned: ${resData.earned}
+        </div>
+        <hr style="margin:15px 0;">
+      `;
+
+      resData.results.forEach((r,i)=>{
+        out += `
+          <div style="margin-bottom:18px;">
+            <b>Q${i+1}: ${r.question}</b><br><br>
+            <span style="color:#444;">Your Answer:</span>
+            <pre>${r.user || "(no answer)"}</pre>
+            <span style="color:#444;">Correct Answer:</span>
+            <pre>${r.correct}</pre>
+            <div style="color:#333;"><b>Explanation:</b> ${r.explanation}</div>
+            <hr style="margin-top:10px;">
+          </div>
+        `;
+      });
+
+      document.getElementById("resultArea").innerHTML = out;
+    });
+
+  }catch(err){
+    area.innerHTML = `<div class='output-card'>❌ Server error: Could not generate quiz.</div>`;
+  }
+});
+</script>
+
+</body>
+</html>

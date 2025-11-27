@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Profile – AI Learner</title>
+
+  <style>
+    :root {
+      --bg1:#160630; --bg2:#6c1d6c; --panel:#d6c4cf;
+      --box:#d6c4cf; --text:#2d2d2d; --primary:#5c277d;
+      --border:#e8e3fb; --shadow:0 10px 24px rgba(124,77,255,0.18);
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+      font-family:Segoe UI, sans-serif;
+      height:100vh; overflow:hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position:fixed; left:0; top:0;
+      width:240px; height:100vh;
+      background:var(--panel);
+      padding:30px 20px;
+    }
+
+    .nav a {
+      display:block;
+      padding:12px 10px;
+      color:#222; text-decoration:none;
+      border-radius:8px;
+      margin-bottom:6px;
+      font-weight:500;
+    }
+
+    .nav a.active, .nav a:hover {
+      background:#fff;
+    }
+
+    /* MAIN CENTER CARD */
+    .main {
+      position:fixed; left:50%; top:50%;
+      transform:translate(-50%,-50%);
+      width:100%; max-width:520px;
+    }
+
+    .card {
+      background:var(--box); border:1px solid var(--border);
+      padding:20px; border-radius:16px;
+      box-shadow:var(--shadow);
+      margin-bottom:18px;
+      text-align:center;
+    }
+
+    .title {
+      font-size:20px; font-weight:700;
+      margin-bottom:10px; color:#222;
+    }
+
+    .text {
+      font-size:15px; color:#333; margin-bottom:8px;
+    }
+
+    .button {
+      background:var(--primary); color:white;
+      padding:10px 14px;
+      border:none; border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      margin:6px;
+    }
+  </style>
+
+  <script>
+    async function clearHistory() {
+      if (!confirm("Are you sure you want to clear your history?")) return;
+
+      await fetch("http://127.0.0.1:8000/clear-history", { method: "POST" });
+
+      alert("History cleared!");
+    }
+  </script>
+
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand" style="font-size:22px; font-weight:700; margin-bottom:20px;">AI Learner</div>
+    <nav class="nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="ask-doubts.html">Ask Doubts</a>
+      <a href="generate-quiz.html">Generate Quiz</a>
+      <a href="rewards.html">Rewards</a>
+      <a href="history.html">History</a>
+      <a href="profile.html" class="active">Profile</a>
+    </nav>
+  </aside>
+
+  <!-- CENTER -->
+  <main class="main">
+
+    <div class="card">
+      <div class="title">Your Profile</div>
+      <div class="text"><strong>Username:</strong> Learner</div>
+    </div>
+
+    <div class="card">
+      <button class="button" onclick="clearHistory()">Clear Learning History</button>
+      <button class="button">Logout</button>
+    </div>
+
+  </main>
+
+</body>
+</html>

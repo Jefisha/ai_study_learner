@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Learner – Login</title>
+
+  <style>
+    :root {
+      --bg1: #160630;
+      --bg2: #6c1d6c;
+      --card-bg: #f0e6f5;
+      --primary: #5c277d;
+      --text-dark: #2b1d33;
+      --text-muted: #6a5a7f;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      height: 100vh;
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 480px;
+      background: var(--card-bg);
+      padding: 70px 60px;
+      border-radius: 40px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+    }
+
+    /* Wave animation */
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -40px; left: -40px;
+      width: 160%; height: 160%;
+      background: radial-gradient(circle, #ffffff80 0%, transparent 70%);
+      animation: float 6s infinite ease-in-out;
+      z-index: 0;
+    }
+    @keyframes float {
+      50% { transform: translate(-10px, 15px); }
+    }
+
+    .card > * { position: relative; z-index: 2; }
+
+    /* Avatar with robo.jpg */
+    .avatar {
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #a87dff;
+      box-shadow: 0 0 12px rgba(140, 85, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;   /* Crop perfectly */
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+
+    p {
+      color: var(--text-muted);
+      margin-bottom: 22px;
+      font-size: 15px;
+    }
+
+    form { display: grid; gap: 14px; text-align: left; }
+
+    label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #3b2850;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: 2px solid #ddd;
+      background: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 6px rgba(140, 85, 255, 0.3);
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: var(--primary);
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(90, 40, 120, 0.35);
+      transition: 0.2s;
+    }
+    button:hover { background: #7c38b1; transform: translateY(-2px); }
+  </style>
+
+</head>
+<body>
+
+  <div class="card">
+    
+    <!-- Robo Image here -->
+    <div class="avatar">
+      <img src="robo.jpg" alt="Avatar">
+    </div>
+
+    <h1>Welcome! 🎉</h1>
+    <p>Start your AI learning journey</p>
+
+    <form action="dashboard.html" method="GET">
+      <label for="name">Your Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required />
+
+      <label for="age">Your Age</label>
+      <input type="number" id="age" name="age" placeholder="Enter your age" required />
+
+      <button type="submit">Start Learning →</button>
+    </form>
+  </div>
+
+</body>
+</html>
